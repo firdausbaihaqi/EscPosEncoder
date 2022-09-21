@@ -1,3 +1,6 @@
+### credits
+Forked from NielsLeenheer's [EscPosEncoder](https://github.com/NielsLeenheer/EscPosEncoder). This version include table and box commands which not published in npm by the original Author.
+
 # esc-pos-encoder
 
 Create a set of commands that can be send to any receipt printer that supports ESC/POS.
