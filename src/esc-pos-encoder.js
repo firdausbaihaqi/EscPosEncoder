@@ -1,5 +1,5 @@
 const linewrap = require('linewrap');
-const {createCanvas} = require('canvas');
+const { createCanvas } = require('canvas');
 const Dither = require('canvas-dither');
 const Flatten = require('canvas-flatten');
 const CodepageEncoder = require('codepage-encoder');
@@ -300,7 +300,7 @@ class EscPosEncoder {
   _wrap(value, position) {
     if (position || (this._options.wordWrap && this._options.width)) {
       const indent = '-'.repeat(this._cursor);
-      const w = linewrap(position || this._options.width, {lineBreak: '\n', whitespace: 'all'});
+      const w = linewrap(position || this._options.width, { lineBreak: '\n', whitespace: 'all' });
       const result = w(indent + value).substring(this._cursor).split('\n');
 
       return result;
@@ -343,7 +343,7 @@ class EscPosEncoder {
 
 
 
-  
+
   /**
      * Initialize the printer
      *
@@ -475,7 +475,7 @@ class EscPosEncoder {
      */
   underline(value) {
     if (typeof value === 'undefined') {
-      value = ! this._state.underline;
+      value = !this._state.underline;
     }
 
     this._state.underline = value;
@@ -496,7 +496,7 @@ class EscPosEncoder {
      */
   italic(value) {
     if (typeof value === 'undefined') {
-      value = ! this._state.italic;
+      value = !this._state.italic;
     }
 
     this._state.italic = value;
@@ -517,7 +517,7 @@ class EscPosEncoder {
      */
   bold(value) {
     if (typeof value === 'undefined') {
-      value = ! this._state.bold;
+      value = !this._state.bold;
     }
 
     this._state.bold = value;
@@ -596,7 +596,7 @@ class EscPosEncoder {
      */
   invert(value) {
     if (typeof value === 'undefined') {
-      value = ! this._state.invert;
+      value = !this._state.invert;
     }
 
     this._state.invert = value;
@@ -616,15 +616,30 @@ class EscPosEncoder {
      *
      */
   size(value) {
-    if (value === 'small') {
-      value = 0x01;
-    } else {
-      value = 0x00;
+    switch (value) {
+      case 'large':
+        value = [0x1b, 0x21, 0x30];
+        break;
+      case 'small':
+        value = [0x1b, 0x21, 0x01];
+        break;
+      case 'medium':
+        value = [0x1b, 0x21, 0x16];
+        break;
+      case 'medium-large':
+        value = [0x1b, 0x21, 0x22];
+        break;
+      case 'medium-sm':
+        value = [0x1b, 0x21, 0x04];
+        break;
+      case 'medium-med':
+        value = [0x1b, 0x21, 0x10];
+        break;
+      default:
+        value = [0x1b, 0x21, 0x00];
+        break;
     }
-
-    this._queue([
-      0x1b, 0x4d, value,
-    ]);
+    this._queue(value);
 
     return this;
   }
@@ -682,7 +697,7 @@ class EscPosEncoder {
         const cell = [];
 
         if (typeof data[r][c] === 'string') {
-          const w = linewrap(columns[c].width, {lineBreak: '\n'});
+          const w = linewrap(columns[c].width, { lineBreak: '\n' });
           const fragments = w(data[r][c]).split('\n');
 
           for (let f = 0; f < fragments.length; f++) {
@@ -853,7 +868,7 @@ class EscPosEncoder {
     const cell = [];
 
     if (typeof contents === 'string') {
-      const w = linewrap(options.width - 2 - options.paddingLeft - options.paddingRight, {lineBreak: '\n'});
+      const w = linewrap(options.width - 2 - options.paddingLeft - options.paddingRight, { lineBreak: '\n' });
       const fragments = w(contents).split('\n');
 
       for (let f = 0; f < fragments.length; f++) {
